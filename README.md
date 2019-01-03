@@ -1,2 +1,2 @@
-# symmetrical-potato
+# Unity Project Cem Deniz Kabakci
 VR Teambuilding
