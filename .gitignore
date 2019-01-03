@@ -3,6 +3,7 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+/VR Teambuilding/Assets/AssetStoreTools*
 /VR Teambuilding/Assets/SteamVR/*
 /VR Teambuilding/Assets/SteamVR.meta
 /VR Teambuilding/Assets/Libraries/SteamVR/*
@@ -58,7 +59,7 @@ Thumbs.db
 ehthumbs.db
 
 # Folder config file
-Desktop.ini
+[Dd]esktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
