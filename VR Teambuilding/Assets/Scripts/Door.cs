@@ -7,19 +7,31 @@ public class Door : MonoBehaviour{
     public GameObject leftDoor;
     public GameObject rightDoor;
     private bool open = false;
-    private bool disabled = false;
     private Vector3 left = new Vector3(0, 0, -0.01f);
     private Vector3 right = new Vector3(0, 0, 0.01f);
 
 
-    public void Open() {
+    public void Use() {
         if (open) {
             StartCoroutine("SlideClosed");
         } else {
             StartCoroutine("SlideOpen");
         }
-        this.GetComponent<BoxCollider>().enabled = !this.GetComponent<BoxCollider>().enabled;
         open = !open;
+    }
+
+    public void Open() {
+        if (!open) {
+            StartCoroutine("SlideOpen");
+            open = true;
+        }
+    }
+
+    public void Close() {
+        if (open) {
+            StartCoroutine("SlideClosed");
+            open = false;
+        }
     }
 
     IEnumerator SlideClosed() {
@@ -35,7 +47,11 @@ public class Door : MonoBehaviour{
             leftDoor.transform.Translate(left);
             rightDoor.transform.Translate(right);
             yield return new WaitForSeconds(.01f);
-        }   
+        }
+    }
+
+    public bool isOpen() {
+        return open;
     }
 
 

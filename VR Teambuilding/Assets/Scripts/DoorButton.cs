@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRTK;
 
-public class DoorOpener : MonoBehaviour{
+public class DoorButton : MonoBehaviour{
 
     private VRTK_InteractableObject _linkedObject;
     public GameObject target;
@@ -15,11 +15,10 @@ public class DoorOpener : MonoBehaviour{
 
 
     private void InteractableObjectUsed(object sender, InteractableObjectEventArgs e){
-        OpenDoor();
+        Use();
     }
 
-    public void OpenDoor() {
-        //target.GetComponent<Renderer>().material.color = Random.ColorHSV(1f, 1f);
-        target.GetComponent<Door>().Open();
+    public void Use() {
+        target.GetComponent<Door>().Use();
     }
 }
