@@ -1,54 +1,46 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
+[RequireComponent(typeof(Animator))]
 public class Door : MonoBehaviour{
 
-    public GameObject leftDoor;
-    public GameObject rightDoor;
+    public GameObject m_MyGameObject;
+    GameObject m_MyInstantiated;
+    protected Animator animator;
     private bool open = false;
-    private Vector3 left = new Vector3(0, 0, -0.01f);
-    private Vector3 right = new Vector3(0, 0, 0.01f);
 
+
+    void Start() {
+        m_MyInstantiated = Instantiate(m_MyGameObject);
+        NetworkServer.Spawn(m_MyInstantiated);
+        Debug.Log("Spawn door");
+        animator = GetComponent<Animator>();
+    }
 
     public void Use() {
-        if (open) {
-            StartCoroutine("SlideClosed");
+        if (this.isOpen()) {
+            this.Close();
         } else {
-            StartCoroutine("SlideOpen");
+            this.Open();
         }
-        open = !open;
     }
 
     public void Open() {
-        if (!open) {
-            StartCoroutine("SlideOpen");
-            open = true;
-        }
+        Debug.Log("Open");
+        animator.SetTrigger("Open");
+        //animator.Play("DoorOpen");
+        open = true;
     }
 
     public void Close() {
-        if (open) {
-            StartCoroutine("SlideClosed");
-            open = false;
-        }
+        Debug.Log("Close");
+        animator.SetTrigger("Close");
+        //animator.Play("DoorClose");
+        open = false;
     }
 
-    IEnumerator SlideClosed() {
-        for (float f = 0; f < 99; f++) {
-            leftDoor.transform.Translate(right);
-            rightDoor.transform.Translate(left);
-            yield return new WaitForSeconds(.01f);
-        }
-    }
-
-    IEnumerator SlideOpen() {
-        for (float f = 0; f < 99; f++) {
-            leftDoor.transform.Translate(left);
-            rightDoor.transform.Translate(right);
-            yield return new WaitForSeconds(.01f);
-        }
-    }
 
     public bool isOpen() {
         return open;
