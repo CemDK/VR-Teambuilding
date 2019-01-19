@@ -3,26 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class MyNetworkManager : NetworkBehaviour{
+public class MyNetworkManager : NetworkManager{
 
-    public NetworkManager networkManager;
-
-    // Start is called before the first frame update
     void Start(){
-        Debug.Log("Is Server: " + this.isServer);
-        Debug.Log("Prefabs: " + networkManager.spawnPrefabs.Count);
-        
+        Debug.Log("0. MyNetworkManager Start() called");
     }
 
-    public override void OnStartClient() {
-        if (this.isServer) {
-            NetworkServer.Spawn(networkManager.spawnPrefabs[0]);
-            Debug.Log("Door spawned");
+    public override void OnStartServer() {
+        base.OnStartServer();
+        Debug.Log("1. MyNetworkManager OnStartServer() called");
+    }
+
+    public override void OnServerConnect(NetworkConnection conn) {
+        base.OnServerConnect(conn);
+        Debug.Log("2. MyNetworkManager OnServerConnect() called");
+        if (this.isActiveAndEnabled) {
+            Debug.Log("3. MyNetworkManager this.isActiveAndEnabled true");
+        } else {
+            Debug.Log("3. MyNetworkManager this.isActiveAndEnabled false");
+
         }
     }
 
-    // Update is called once per frame
-    void Update(){
-        
+    public override void OnStartClient(NetworkClient client) {
+        base.OnStartClient(client);
+        Debug.Log("4. Client started!");
+    }
+
+    public override void OnClientConnect(NetworkConnection conn) {
+        base.OnClientConnect(conn);
+        Debug.Log("5. Client has connected!");
     }
 }

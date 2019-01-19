@@ -1,51 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(Animator))]
-public class Door : MonoBehaviour{
-
-    public GameObject m_MyGameObject;
-    GameObject m_MyInstantiated;
+public class Door : NetworkBehaviour {
+    [SerializeField]
     protected Animator animator;
+
+    [SyncVar(hook = "ChangeDoorState")]
     private bool open = false;
 
-
-    void Start() {
-        m_MyInstantiated = Instantiate(m_MyGameObject);
-        NetworkServer.Spawn(m_MyInstantiated);
-        Debug.Log("Spawn door");
-        animator = GetComponent<Animator>();
-    }
-
     public void Use() {
-        if (this.isOpen()) {
-            this.Close();
+        if (isServer) {
+            open = !open;
+        } else if(isClient){
+            Debug.Log("This shouldn't happen! Door.cs Use() called by Client");
         } else {
-            this.Open();
+            Debug.Log("This shouldn't happen! Door.cs Use() called by ???");
         }
     }
 
-    public void Open() {
-        Debug.Log("Open");
-        animator.SetTrigger("Open");
-        //animator.Play("DoorOpen");
-        open = true;
+    public void ChangeDoorState(bool pState) {
+        animator.SetBool("openDoor", pState);
+        animator.SetBool("closeDoor", !pState);
     }
-
-    public void Close() {
-        Debug.Log("Close");
-        animator.SetTrigger("Close");
-        //animator.Play("DoorClose");
-        open = false;
-    }
-
-
-    public bool isOpen() {
-        return open;
-    }
-
-
-
 }
