@@ -1,17 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class MyNetworkManager : NetworkManager{
 
-    void Start(){
-        Debug.Log("0. MyNetworkManager Start() called");
+
+    public void StartHost(){
+        base.StartHost();
+        Debug.Log("0. MyNetworkManager StartHost() called");
     }
 
-    public override void OnStartServer() {
-        base.OnStartServer();
-        Debug.Log("1. MyNetworkManager OnStartServer() called");
+    public void JoinGame() {
+        NetworkManager.singleton.networkAddress = GameObject.Find("InputFieldIPAddress").transform.FindChild("Text").GetComponent<Text>().text;
+        NetworkManager.singleton.StartClient();
     }
 
     public override void OnServerConnect(NetworkConnection conn) {

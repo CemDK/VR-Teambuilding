@@ -4,7 +4,9 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(Animator))]
 public class Door : NetworkBehaviour {
     [SerializeField]
-    protected Animator animator;
+    private Animator animator;
+    [SerializeField]
+    private PlayAudio playAudioScript;
 
     [SyncVar(hook = "ChangeDoorState")]
     private bool open = false;
@@ -20,6 +22,8 @@ public class Door : NetworkBehaviour {
     }
 
     public void ChangeDoorState(bool pState) {
+        int clip = pState ? 1 : 0;
+        playAudioScript.PlaySoundAtIndex(clip);
         animator.SetBool("openDoor", pState);
         animator.SetBool("closeDoor", !pState);
     }
