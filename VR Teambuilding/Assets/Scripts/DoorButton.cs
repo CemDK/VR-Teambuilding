@@ -15,6 +15,6 @@ public class DoorButton : MonoBehaviour{
     }
 
     private void InteractableObjectUsed(object sender, InteractableObjectEventArgs e){
-        GameObject.Find("LocalPlayer").GetComponent<Player>().Use(target);
+        GameObject.Find("LocalPlayer").GetComponent<Player>().Use(target, 0);
     }
 }

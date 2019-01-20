@@ -27,4 +27,16 @@ public class Door : NetworkBehaviour {
         animator.SetBool("openDoor", pState);
         animator.SetBool("closeDoor", !pState);
     }
+
+    public void Open() {
+        if (!open) {
+            open = true;
+        }
+    }
+
+    public void Close() {
+        if (open) {
+            open = false;
+        }
+    }
 }

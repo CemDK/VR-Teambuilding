@@ -31,19 +31,6 @@ public class Player : NetworkBehaviour{
     }
 
     private void Update(){
-        //if (!sdkSetupLoaded) {
-        //    if (isLocalPlayer) {
-        //        if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null) {
-        //            headSet = VRTK_SDKManager.instance.loadedSetup.actualHeadset;
-        //            leftHandController = VRTK_SDKManager.instance.loadedSetup.actualLeftController;
-        //            rightHandController = VRTK_SDKManager.instance.loadedSetup.actualRightController;
-        //            sdkSetupLoaded = true;
-        //        } else {
-        //            Debug.Log("SDK Setup not yet sdkSetupLoaded!");
-        //        }
-        //    }
-        //}
-
         if (isLocalPlayer && sdkSetupLoaded) {
             head.transform.position = headSet.transform.position;
             head.transform.rotation = headSet.transform.rotation;
@@ -54,12 +41,22 @@ public class Player : NetworkBehaviour{
         }
     }
 
-    public void Use(GameObject pGameObject) {
-        CmdUse(pGameObject);
+    public void Use(GameObject pGameObject, int pNumber) {
+        Debug.Log(pGameObject.tag);
+        CmdUse(pGameObject, pNumber);
     }
 
     [Command]
-    public void CmdUse(GameObject pGameObject) {
-        pGameObject.GetComponent<Door>().Use();
+    public void CmdUse(GameObject pGameObject, int pNumber) {
+        switch (pGameObject.tag) {
+            case "Door":
+                pGameObject.GetComponent<Door>().Use();
+                break;
+            case "QuestController":
+                pGameObject.GetComponent<QuestController>().Solve(pNumber);
+                break;
+            default:
+                break;
+        }
     }
 }
