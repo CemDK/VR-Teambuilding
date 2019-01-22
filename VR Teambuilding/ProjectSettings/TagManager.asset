@@ -6,8 +6,10 @@ TagManager:
   tags:
   - ExcludeTeleport
   - Door
-  - QuestController
   - LocalPlayer
+  - WeightedCube
+  - DoorPuzzle
+  - WeightedCubeSpawn
   layers:
   - Default
   - TransparentFX

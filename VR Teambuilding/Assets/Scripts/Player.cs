@@ -10,23 +10,30 @@ public class Player : NetworkBehaviour{
     private bool sdkSetupLoaded = false;
 
     public override void OnStartLocalPlayer() {
+        base.OnStartLocalPlayer();
         if (isLocalPlayer) {
             Debug.Log("OnStartLocalPlayer()");
-            base.OnStartLocalPlayer();
             gameObject.name = "LocalPlayer";
             StartCoroutine("WaitUntilSetupLoaded");
         }
     }
 
+    /// <summary>
+    /// Gets the loaded SDK Setup and saves actualHeadset, actualLeftController and actualRightController.
+    /// Done in a coroutine, since for me it never loaded in Awake(), Start() or OnStartLocalPlayer()
+    /// </summary>
     IEnumerator WaitUntilSetupLoaded() {
-        yield return new WaitForSeconds(1f);
-        if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null) {
-            headSet = VRTK_SDKManager.instance.loadedSetup.actualHeadset;
-            leftHandController = VRTK_SDKManager.instance.loadedSetup.actualLeftController;
-            rightHandController = VRTK_SDKManager.instance.loadedSetup.actualRightController;
-            sdkSetupLoaded = true;
-        } else {
-            Debug.Log("SDK Setup not yet sdkSetupLoaded!");
+        while (!sdkSetupLoaded) {
+            if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null) {
+                Debug.Log("Found loaded SDK Setup");
+                headSet = VRTK_SDKManager.instance.loadedSetup.actualHeadset;
+                leftHandController = VRTK_SDKManager.instance.loadedSetup.actualLeftController;
+                rightHandController = VRTK_SDKManager.instance.loadedSetup.actualRightController;
+                sdkSetupLoaded = true;
+            } else {
+                Debug.Log("SDK Setup not yet loaded!");
+            }
+            yield return null;
         }
     }
 
@@ -52,8 +59,8 @@ public class Player : NetworkBehaviour{
             case "Door":
                 pGameObject.GetComponent<Door>().Use();
                 break;
-            case "QuestController":
-                pGameObject.GetComponent<QuestController>().Solve(pNumber);
+            case "DoorPuzzle":
+                pGameObject.GetComponent<DoorPuzzle>().Solve(pNumber);
                 break;
             default:
                 break;
