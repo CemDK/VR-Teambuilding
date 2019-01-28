@@ -5,15 +5,18 @@ using UnityEngine.Networking;
 
 public class WeightedCubeSpawner : NetworkBehaviour {
 
-    //[SerializeField] GameObject companionCubePrefab;
-    private GameObject[] companionCubeSpawns;
-
-    public override void OnStartServer() {
-        GameObject companionCubePrefab = NetworkManager.singleton.spawnPrefabs[0];
-        companionCubeSpawns = GameObject.FindGameObjectsWithTag("WeightedCubeSpawn");
-        foreach (GameObject companionCubeSpawn in companionCubeSpawns) {
-            GameObject companionCube = Instantiate(companionCubePrefab, companionCubeSpawn.transform.position, Quaternion.identity);
-            NetworkServer.Spawn(companionCube);
+    //[SerializeField] GameObject weightedCubePrefab;
+    private GameObject[] weightedCubeSpawns;
+    
+    public void Spawn(NetworkConnection networkConnection, int player) {
+        GameObject weightedCubePrefab = NetworkManager.singleton.spawnPrefabs[0];
+        weightedCubeSpawns = GameObject.FindGameObjectsWithTag("WeightedCubeSpawn");
+        foreach (GameObject weightedCubeSpawn in weightedCubeSpawns) {
+            if (weightedCubeSpawn.name.Equals("Player" + player)){
+                weightedCubePrefab.GetComponent<WeightedCube>().ChangeColor(player);
+                GameObject weightedCube = Instantiate(weightedCubePrefab, weightedCubeSpawn.transform.position, Quaternion.identity);
+                NetworkServer.SpawnWithClientAuthority(weightedCube, networkConnection);
+            }
         }
         
     }

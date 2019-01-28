@@ -22,8 +22,8 @@ public class Door : NetworkBehaviour {
     }
 
     public void ChangeDoorState(bool pState) {
-        int clip = pState ? 1 : 0;
-        playAudioScript.PlaySoundAtIndex(clip);
+        //int clip = pState ? 1 : 0;
+        playAudioScript.PlaySoundAtIndex(0);
         animator.SetBool("openDoor", pState);
         animator.SetBool("closeDoor", !pState);
     }

@@ -10,6 +10,7 @@ TagManager:
   - WeightedCube
   - DoorPuzzle
   - WeightedCubeSpawn
+  - HasPlayerColor
   layers:
   - Default
   - TransparentFX

@@ -3,18 +3,62 @@ using UnityEngine;
 using UnityEngine.Networking;
 using VRTK;
 
-public class Player : NetworkBehaviour{
+public class Player : NetworkBehaviour {
+    [SerializeField]
+    private Material BlueDark, Gold;
+
     [SerializeField]
     private GameObject head, leftHand, rightHand;
     private GameObject headSet, leftHandController, rightHandController;
     private bool sdkSetupLoaded = false;
 
+
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
-        if (isLocalPlayer) {
-            Debug.Log("OnStartLocalPlayer()");
-            gameObject.name = "LocalPlayer";
-            StartCoroutine("WaitUntilSetupLoaded");
+        Debug.Log("OnStartLocalPlayer()");
+        gameObject.tag = "LocalPlayer";
+        gameObject.name = "LocalPlayer";
+        StartCoroutine("WaitUntilSetupLoaded");
+
+        //Moving the connecting client VR Setup to <Player 2 Spawn>
+        if (!isServer) {
+            GameObject SDKManager = GameObject.Find("[VRTK_SDKManager]");
+            Transform SpawnPositionTransform = GameObject.Find("Player 2 Spawn").transform;
+            SDKManager.transform.position = SpawnPositionTransform.position;
+            SDKManager.transform.rotation = SpawnPositionTransform.rotation;
+            CmdChangePlayerColor();
+            CmdSpawnCubes(2);
+        } else {
+            CmdSpawnCubes(1);
+        }
+    }
+
+    [Command]
+    public void CmdSpawnCubes(int player) {
+        GameObject weightedCubePrefab = NetworkManager.singleton.spawnPrefabs[0];
+        foreach (GameObject weightedCubeSpawn in GameObject.FindGameObjectsWithTag("WeightedCubeSpawn")) {
+            if (weightedCubeSpawn.name.Equals("Player" + player)) {
+                GameObject weightedCube = Instantiate(weightedCubePrefab, weightedCubeSpawn.transform.position, Quaternion.identity);
+                NetworkServer.SpawnWithClientAuthority(weightedCube, connectionToClient);
+                weightedCube.GetComponent<WeightedCube>().ChangeColor(player);
+            }
+        }
+    }
+
+    [Command]
+    void CmdChangePlayerColor() {
+        RpcChangePlayerColor();
+    }
+
+    [ClientRpc]
+    void RpcChangePlayerColor() {
+        Debug.Log("RPC!");
+
+        Material newMaterial = (isServer && isLocalPlayer) ? Gold : BlueDark;
+        foreach (Renderer ColoredPlayerGameObject in gameObject.GetComponentsInChildren<Renderer>()) {
+            if (ColoredPlayerGameObject.tag.Equals("HasPlayerColor")) {
+                ColoredPlayerGameObject.material = newMaterial;
+            }
         }
     }
 
@@ -66,4 +110,6 @@ public class Player : NetworkBehaviour{
                 break;
         }
     }
+
+   
 }
