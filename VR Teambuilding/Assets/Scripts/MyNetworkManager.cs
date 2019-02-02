@@ -6,7 +6,6 @@ public class MyNetworkManager : NetworkManager{
 
     private GameObject[] companionCubeSpawns;
 
-
     /// <summary>
     /// Exposing the function for use in the Menu_Scene
     /// </summary>
@@ -14,7 +13,6 @@ public class MyNetworkManager : NetworkManager{
         base.StartHost();
         Debug.Log("MyNetworkManager: StartHost() called");
     }
-
 
 
 

@@ -489,6 +489,26 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 2521650905907530408}
+    - target: {fileID: 3549592899172994453, guid: 430c425ee1034714e9f1933345802c5e,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 2521650905907530408}
+    - target: {fileID: 3383342679823312293, guid: 430c425ee1034714e9f1933345802c5e,
+        type: 3}
+      propertyPath: isUsable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3383342679823312293, guid: 430c425ee1034714e9f1933345802c5e,
+        type: 3}
+      propertyPath: holdButtonToUse
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495016016969351397, guid: 430c425ee1034714e9f1933345802c5e,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 2521650905907530408}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 430c425ee1034714e9f1933345802c5e, type: 3}
 --- !u!4 &110774974 stripped
