@@ -17,7 +17,7 @@ public class PressurePlate : MonoBehaviour {
         if (other.CompareTag("WeightedCube")) {
             animator.SetBool("isPressed", true);
             if (enabled) {
-                GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<Player>().Use(target, 0);
+                GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<PlayerUseController>().Use(target, 0);
             }
         }
     }
@@ -26,7 +26,7 @@ public class PressurePlate : MonoBehaviour {
         if (other.CompareTag("WeightedCube")) {
             animator.SetBool("isPressed", false);
             if (enabled) {
-                GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<Player>().Use(target, 0);
+                GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<PlayerUseController>().Use(target, 0);
             }
         }
     }

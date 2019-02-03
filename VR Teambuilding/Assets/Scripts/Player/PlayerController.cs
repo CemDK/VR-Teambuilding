@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using VRTK;
 
-public class Player : NetworkBehaviour {
+public class PlayerController : NetworkBehaviour {
     [SerializeField]
     private Material BlueDark, Gold;
 
     [SerializeField]
-    private GameObject head, leftHand, rightHand;
+    private GameObject head, headset, headSetBand, leftHand, rightHand;
     private GameObject headSet, leftHandController, rightHandController;
     private bool sdkSetupLoaded = false;
 
@@ -19,6 +19,9 @@ public class Player : NetworkBehaviour {
         gameObject.tag = "LocalPlayer";
         gameObject.name = "LocalPlayer";
         StartCoroutine("WaitUntilSetupLoaded");
+
+        headset.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        headSetBand.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
 
         //Moving the connecting client VR Setup to <Player 2 Spawn>
         if (!isServer) {
@@ -91,25 +94,4 @@ public class Player : NetworkBehaviour {
             rightHand.transform.rotation = rightHandController.transform.rotation;
         }
     }
-
-    public void Use(GameObject pGameObject, int pNumber) {
-        Debug.Log(pGameObject.tag);
-        CmdUse(pGameObject, pNumber);
-    }
-
-    [Command]
-    public void CmdUse(GameObject pGameObject, int pNumber) {
-        switch (pGameObject.tag) {
-            case "Door":
-                pGameObject.GetComponent<Door>().Use();
-                break;
-            case "DoorPuzzle":
-                pGameObject.GetComponent<DoorPuzzle>().Solve(pNumber);
-                break;
-            default:
-                break;
-        }
-    }
-
-   
 }
