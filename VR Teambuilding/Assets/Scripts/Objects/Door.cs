@@ -14,15 +14,10 @@ public class Door : NetworkBehaviour {
     public void Use() {
         if (isServer) {
             open = !open;
-        } else if(isClient){
-            Debug.Log("This shouldn't happen! Door.cs Use() called by Client");
-        } else {
-            Debug.Log("This shouldn't happen! Door.cs Use() called by ???");
         }
     }
 
     public void ChangeDoorState(bool pState) {
-        //int clip = pState ? 1 : 0;
         playAudioScript.PlaySoundAtIndex(0);
         animator.SetBool("openDoor", pState);
         animator.SetBool("closeDoor", !pState);

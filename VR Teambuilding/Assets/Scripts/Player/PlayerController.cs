@@ -22,6 +22,8 @@ public class PlayerController : NetworkBehaviour {
 
         headset.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         headSetBand.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        //leftHand.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        //rightHand.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
 
         //Moving the connecting client VR Setup to <Player 2 Spawn>
         if (!isServer) {
@@ -30,23 +32,10 @@ public class PlayerController : NetworkBehaviour {
             SDKManager.transform.position = SpawnPositionTransform.position;
             SDKManager.transform.rotation = SpawnPositionTransform.rotation;
             CmdChangePlayerColor();
-            CmdSpawnCubes(2);
-        } else {
-            CmdSpawnCubes(1);
         }
     }
 
-    [Command]
-    public void CmdSpawnCubes(int player) {
-        GameObject weightedCubePrefab = NetworkManager.singleton.spawnPrefabs[0];
-        foreach (GameObject weightedCubeSpawn in GameObject.FindGameObjectsWithTag("WeightedCubeSpawn")) {
-            if (weightedCubeSpawn.name.Equals("Player" + player)) {
-                GameObject weightedCube = Instantiate(weightedCubePrefab, weightedCubeSpawn.transform.position, Quaternion.identity);
-                NetworkServer.SpawnWithClientAuthority(weightedCube, connectionToClient);
-                weightedCube.GetComponent<WeightedCube>().ChangeColor(player);
-            }
-        }
-    }
+    
 
     [Command]
     void CmdChangePlayerColor() {
@@ -55,8 +44,6 @@ public class PlayerController : NetworkBehaviour {
 
     [ClientRpc]
     void RpcChangePlayerColor() {
-        Debug.Log("RPC!");
-
         Material newMaterial = (isServer && isLocalPlayer) ? Gold : BlueDark;
         foreach (Renderer ColoredPlayerGameObject in gameObject.GetComponentsInChildren<Renderer>()) {
             if (ColoredPlayerGameObject.tag.Equals("HasPlayerColor")) {

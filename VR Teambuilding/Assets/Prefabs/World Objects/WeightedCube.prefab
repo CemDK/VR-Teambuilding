@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   precisionGrab: 0
   rightSnapHandle: {fileID: 34}
-  leftSnapHandle: {fileID: 0}
+  leftSnapHandle: {fileID: 34}
   throwVelocityWithAttachDistance: 0
   throwMultiplier: 1
   onGrabCollisionDelay: 0
@@ -122,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materialPlayer1: {fileID: 2100000, guid: 6733b5266df72ae4081cb4412c1654f0, type: 2}
   materialPlayer2: {fileID: 2100000, guid: 5403522b7ff9e6a4d82ccbf5db1bee80, type: 2}
+  playerNumber: 0
 --- !u!114 &75
 MonoBehaviour:
   m_ObjectHideFlags: 0

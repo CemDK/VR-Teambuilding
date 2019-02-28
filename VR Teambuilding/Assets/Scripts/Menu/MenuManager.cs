@@ -17,6 +17,7 @@ public class MenuManager : MonoBehaviour
     }
 
 
+
     public void StartHostClicked() {
         StartCoroutine("StartHost");
     }
@@ -30,6 +31,8 @@ public class MenuManager : MonoBehaviour
         }
         myNetworkManager.StartHost();
     }
+
+
 
     public void JoinGameClicked() {
         StartCoroutine("JoinGame");

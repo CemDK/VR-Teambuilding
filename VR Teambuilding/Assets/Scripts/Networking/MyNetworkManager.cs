@@ -51,7 +51,7 @@ public class MyNetworkManager : NetworkManager{
     
 
     //This is called ON THE SERVER! if a client has disconnected
-    //I destroy the player instance corresponding to the clients connection
+    //I destroy the player instance and spawned objects corresponding to the clients connection
     public override void OnServerDisconnect(NetworkConnection conn) {
         NetworkServer.DestroyPlayersForConnection(conn);
         Debug.Log("MyNetworkManager: I am the Server: lost connection to " + conn.connectionId + " " + conn.hostId);

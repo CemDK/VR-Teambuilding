@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using VRTK;
 
 public class WeightedCube : NetworkBehaviour {
 
-    [SerializeField] private Material materialPlayer1;
-    [SerializeField] private Material materialPlayer2;
+    private VRTK_InteractableObject _linkedObject;
 
-    public void ChangeColor(int player) {
-        GameObject cubeBody = gameObject.transform.Find("Body").gameObject;
-        if (cubeBody != null) {
-            if (player == 1) {
-                cubeBody.GetComponent<Renderer>().material = materialPlayer1;
-            } else {
-                cubeBody.GetComponent<Renderer>().material = materialPlayer2;
-            }
-        }
-        CmdTest();
+    void Awake() {
+        _linkedObject = gameObject.GetComponent<VRTK_InteractableObject>();
+        _linkedObject.InteractableObjectGrabbed += HandleGrabbed;
+        _linkedObject.InteractableObjectUngrabbed += HandleUngrabbed;
     }
 
-    [Command]
-    public void CmdTest() {
-        Debug.Log("TESTCMD");
+
+    private void HandleGrabbed(object sender, InteractableObjectEventArgs e) {
+        GameObject.Find("LocalPlayer").GetComponent<AuthorityManager>().CmdAssignAuthority(gameObject.GetComponent<NetworkIdentity>());
+    }
+
+    private void HandleUngrabbed(object sender, InteractableObjectEventArgs e) {
+        GameObject.Find("LocalPlayer").GetComponent<AuthorityManager>().CmdRemoveAuthority(gameObject.GetComponent<NetworkIdentity>());
     }
 }
